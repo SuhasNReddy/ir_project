@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Book Recommendations</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Style the header */
+        .header {
+            text-align: center;
+            /* background-color: #f2f2f2; */
+            padding: 20px;
+        }
+
+        /* Style the container */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+
+        /* Style the card */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Style the image inside the card */
+        .card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Style the title and author inside the card */
+        .card p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .chart-container {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        /* Add a style to hide the chart initially */
+        #pr-chart-container {
+            display: none;
+        }
+        button{
+            position: static;
+            bottom: 0;
+            left: 0;
+            transform: translate(50%,50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Book Recommendations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('top_rated_books') }}">Top Rated Books</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <button onclick="togglePRChart()">PR Curve</button>
+
+    <!-- PR Curve Chart Container -->
+    <div class="chart-container" id="pr-chart-container">
+        <canvas id="pr-curve-chart"></canvas>
+    </div>
+
+    <!-- Recommendations Section -->
+    <p style="text-align: center;font-size: 24px;">
+        Books Based on Your FeedBack
+    </p>
+    <div class="container">
+        {% if recommendations %}
+            {% for book in recommendations %}
+                <div class="card">
+                    <img src="{{ book[2] }}" alt="Book Image">
+                    <p><strong>Title:</strong> {{ book[0] }}</p>
+                    <p><strong>Author:</strong> {{ book[1] }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No recommendations available at the moment.</p>
+        {% endif %}
+    </div>
+
+    
+
+    <!-- Toggle Button -->
+    
+
+    <script>
+        // Get data passed from Flask
+        const recall = {{ recall | tojson }};
+        const precision = {{ precision | tojson }};
+
+        // Create Precision-Recall Curve chart using Chart.js
+        const prCurveCtx = document.getElementById('pr-curve-chart').getContext('2d');
+        const prCurveChart = new Chart(prCurveCtx, {
+            type: 'line',
+            data: {
+                labels: recall,
+                datasets: [{
+                    label: 'Precision-Recall Curve',
+                    borderColor: 'rgb(75, 192, 192)',
+                    data: precision,
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Recall',
+                        },
+                    },
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Precision',
+                        },
+                    },
+                },
+            },
+        });
+
+        // Function to toggle PR Curve visibility
+        function togglePRChart() {
+            const prChartContainer = document.getElementById('pr-chart-container');
+            prChartContainer.style.display = (prChartContainer.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

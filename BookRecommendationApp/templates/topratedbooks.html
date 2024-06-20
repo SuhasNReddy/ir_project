@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Top Rated Books</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Top Rated Books</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('top_rated_books') }}">Top Rated Books</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container results-container">
+        {% if top_rated_books.empty %}
+            <p>No top-rated books available.</p>
+        {% else %}
+            
+            {% for book in top_rated_books.values %}
+                <div class="card">
+                    <p><img src="{{ book[2] }}" alt="Book Image"></p>
+                    <p class="title">{{ book[0] }}</p>
+                    <p> {{ book[1] }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

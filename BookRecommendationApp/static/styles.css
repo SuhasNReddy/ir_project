@@ -1,0 +1,165 @@
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body, h1, h2, ul, li, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    position: sticky;
+    top: 0;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Container styles */
+.container {
+    margin: 20px;
+}
+
+/* Form container styles */
+.form-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: inline-block;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+input {
+    padding: 8px;
+    margin: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Results container styles */
+.results-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Card styles */
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.title {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .form-container {
+        width: 80%;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+.card input[type="checkbox"]:checked + label {
+    outline: none;
+    border: 2px solid green;
+}
+
+/* Remove the default checkbox outline */
+.card input[type="checkbox"] {
+    display: none; /* hide the default checkbox */
+}
+
+/* Style the custom checkbox label */
+.card label {
+    cursor: pointer;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+/* Style the custom checkbox label when checked */
+.card label:hover {
+    background-color: #f0f0f0;
+}
+
+/* Style the custom checkbox label when checked */
+.card label:active {
+    background-color: #e0e0e0;
+}
+
+.results-container form{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.results-container form button{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+}

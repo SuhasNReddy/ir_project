@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Book Recommendations</title>
+    <style>
+        /* Add a CSS style to initially hide the min_avg_rating input */
+        #min_avg_rating {
+            display: none;
+        }
+
+        /* Add a green border to the card when the checkbox is checked */
+        .card input[type="checkbox"]:checked + label {
+            outline: none;
+            border: 2px solid green;
+        }
+
+        /* Remove the default checkbox outline */
+        .card input[type="checkbox"] {
+            display: none; /* hide the default checkbox */
+        }
+
+        /* Style the custom checkbox label */
+        .card label {
+            cursor: pointer;
+            padding: 5px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        /* Style the custom checkbox label when checked */
+        .card label:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Style the custom checkbox label when checked */
+        .card label:active {
+            background-color: #e0e0e0;
+        }
+
+        /* Add green border to the card when the checkbox is checked */
+        .card.checked {
+            border: 2px solid green;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Book Recommendations</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('top_rated_books') }}">Top Rated Books</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container form-container">
+        <form action="{{ url_for('get_recommendations') }}" method="post">
+            <label for="book_name">Enter Book Name:</label>
+            <input type="text" id="book_name" name="book_name" required>
+
+            <!-- Add an onchange event to toggle the visibility of min_avg_rating input -->
+            <label for="search_type">Search Type:</label>
+            <select id="search_type" name="search_type" onchange="toggleMinAvgRating()">
+                <option value="normal">Normal Search</option>
+                <option value="defined">Refined Search</option>
+            </select>
+
+            <label id="min_avg_rating_label" for="min_avg_rating">Minimum Average Rating </label>
+            <input type="number" step="0.1" id="min_avg_rating" name="min_avg_rating" min="1" max="5">
+
+            <button type="submit">Get Recommendations</button>
+        </form>
+    </div>
+
+    <div class="container results-container">
+        {% if recommendations %}
+        <p style="font-size: 24px;" >Select Relevant Books by Clicking ( Relevance Feedback )</p>
+        {% endif %}
+        <form action="{{ url_for('submit_feedback') }}" method="post" onsubmit="return validateForm()">
+            {% if recommendations %}
+            {% for index in range(num_books) %}
+            {% set book = recommendations[index] %}
+            <!-- Your HTML code here -->
+            <div class="card" id="{{ book[0]|replace("'", '&#39;') }}" onclick="toggleCheckbox('{{ book[0]|replace("'", '&#39;') }}_checkbox')">
+                <p><img src="{{ book[2] }}" alt="Book Image"></p>
+                <p><strong>Title:</strong> {{ book[0] }}</p>
+                <p><strong>Author:</strong> {{ book[1] }}</p>
+        
+                <input type="checkbox" id="{{ book[0]|replace("'", '&#39;') }}_checkbox" name="{{ book[0]|replace("'", '&#39;') }}_checkbox" value="{{index}} Relevant">
+                <!-- Modify the other hidden input field to store position and book name -->
+                
+                
+            </div>
+        {% endfor %}
+                <!-- Update the button type to submit the form to the new route -->
+                <button type="submit" id="submitBtn" disabled>Submit Feedback</button>
+            {% elif request.method == 'POST' %}
+                <p>Sorry, no recommendations available for the entered book name.</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Add a script to toggle the visibility of min_avg_rating input and enable/disable the submit button -->
+    <script>
+        const searchType = document.getElementById('search_type');
+        var minAvgRating = document.getElementById('min_avg_rating');
+        var minAvgLabel = document.getElementById('min_avg_rating_label');
+        var submitBtn = document.getElementById('submitBtn');
+        toggleMinAvgRating();
+
+        function toggleMinAvgRating() {
+            minAvgRating.style.display = (searchType.value === 'defined') ? 'inline' : 'none';
+            minAvgLabel.style.display = (searchType.value === 'defined') ? 'inline' : 'none';
+        }
+
+        function toggleCheckbox(checkboxId) {
+            var checkbox = document.getElementById(checkboxId);
+            checkbox.checked = !checkbox.checked;
+
+            // Toggle the 'checked' class for the card
+            var card = document.getElementById(checkboxId.replace('_checkbox', ''));
+            card.classList.toggle('checked', checkbox.checked);
+
+            // Check if any checkbox is checked and enable/disable the submit button accordingly
+            submitBtn.disabled = document.querySelectorAll('.card input[type="checkbox"]:checked').length === 0;
+        }
+
+        function validateForm() {
+            // Perform additional form validation if needed
+            return document.querySelectorAll('.card input[type="checkbox"]:checked').length > 0;
+        }
+    </script>
+</body>
+</html>
