@@ -48,3 +48,35 @@ To run the Book Recommendation System, install the required Python dependencies.
 
 ```bash
 pip install pandas numpy scikit-learn flask
+```
+
+### 2. Prepare the Data
+
+Navigate to the DataSet directory:
+
+```bash
+cd ir_project/DataSet
+```
+
+Run BooksWithRatings.py to generate BooksWithRatings.pkl:
+
+```bash
+python BooksWithRatings.py
+```
+
+This script processes Books.csv and Ratings.csv, merges them, and cleans the data to create a consolidated dataset with book ratings.
+
+### Index the Data
+Navigate to the BookRecommendation directory:
+
+```bash
+cd ../BookRecommendation
+```
+Run Indexing.py to generate Index.pkl:
+```bash
+python Indexing.py
+```
+This script builds an index for efficient book recommendation retrieval using algorithms like cosine similarity and TF-IDF.
+
+## Generate Top Rated Books
+Navigate to the TopRatedBooks directory:
