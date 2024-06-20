@@ -66,7 +66,7 @@ python BooksWithRatings.py
 
 This script processes Books.csv and Ratings.csv, merges them, and cleans the data to create a consolidated dataset with book ratings.
 
-### Index the Data
+## Index the Data
 Navigate to the BookRecommendation directory:
 
 ```bash
@@ -80,3 +80,25 @@ This script builds an index for efficient book recommendation retrieval using al
 
 ## Generate Top Rated Books
 Navigate to the TopRatedBooks directory:
+```bash
+cd ../TopRatedBooks
+```
+Run TopRatedBooks.py to generate TopRatedBooks.pkl:
+```bash
+python TopRatedBooks.py
+```
+This script identifies and filters top-rated books based on user ratings and reviews, saving the results in a TopRatedBooks.pkl file.
+
+## Run the Flask Application
+Navigate to the BookRecommendationApp directory:
+```bash
+cd ../BookRecommendationApp
+```
+Run app.py to start the Flask application:
+```bash
+python app.py
+```
+This will start the Flask server, typically on http://127.0.0.1:5000. Open a web browser and go to this URL to interact with the Book Recommendation System.
+
+## Access the Application
+Once the Flask application is running, you can access it by opening a web browser and navigating to http://localhost:5000. Here, you can search for book recommendations, explore top-rated books, and view relevance-based recommendations based on user feedback.
